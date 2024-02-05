@@ -27,19 +27,41 @@
 
 <body>
 
-    {<div id="map"></div>
+    <div id="map"></div>
 
     <script>
-        var map = L.map('map').setView([51.505, -0.09], 13);
-
+        var map = L.map('map').setView([0, 0], 2);
+    
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
-        
+    
+        fetch('map.geojson')
+        .then(response => response.json())
+        .then(data => {
+            L.geoJSON(data, {
+                onEachFeature: function (feature, layer) {
+                    // check if the feature has a 'City' property
+                    if (feature.properties && feature.properties.City) {
+                        var popupContent = "City: " + feature.properties.City;
+                        popupContent += "<br>Population in 1985: " + feature.properties.Pop_1985;
+                        popupContent += "<br>Population in 1990: " + feature.properties.Pop_1990;
+                        popupContent += "<br>Population in 1995: " + feature.properties.Pop_1995;
+                        popupContent += "<br>Population in 2000: " + feature.properties.Pop_2000;
+                        popupContent += "<br>Population in 2005: " + feature.properties.Pop_2005;
+                        popupContent += "<br>Population in 2010: " + feature.properties.Pop_2010;
+                        popupContent += "<br>Population in 2015: " + feature.properties.Pop_2015;
+                        layer.bindPopup(popupContent);
+                    }
+                }
+            }).addTo(map);
+        })
+        .catch(error => console.error('Error:', error));
+            
     </script>
+    </body>
 
-</body>
 <body>
 
 <script>
