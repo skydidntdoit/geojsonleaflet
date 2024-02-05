@@ -1,3 +1,3 @@
-# helloleaflet
+# geojson
 
-following the quickstart from leaflet
+using my helloleaflet as a boiler plate for geojson
